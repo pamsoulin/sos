@@ -15,3 +15,7 @@ RUN locale-gen
 ENV LC_ALL en_US.UTF-8
 ENV LANG en_US.UTF-8
 ENV LANGUAGE en_US.UTF-8
+
+#create dev user
+RUN sudo useradd -m -d /home/dev dev
+USER dev
