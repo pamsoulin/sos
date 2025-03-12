@@ -25,8 +25,6 @@ RUN echo dev:pswd | sudo chpasswd
 # add user to sudo group and disable password on sudo
 RUN usermod -aG sudo dev
 RUN echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
-# give read/write permissions for work directory
-
 # create file to remove first-time sudo message for dev user
 RUN touch home/dev/.sudo_as_admin_successful
 # switch to dev user
