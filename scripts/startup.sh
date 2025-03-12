@@ -1,5 +1,5 @@
-#!/bin/bash
+#!/bin/zsh
 
-echo "TEST STRING"
+echo "sOS"
 
-exec /bin/bash "$@"
+exec /bin/zsh "$@"
