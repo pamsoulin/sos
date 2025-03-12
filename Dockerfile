@@ -1,10 +1,13 @@
 FROM ubuntu:latest
 LABEL maintainer="Sam Poulin <pamsoulin@gmail.com>"
 
+COPY scripts/ scripts/
+
 RUN apt-get update -y && apt-get upgrade -y
 RUN apt-get install -y \
     sudo \
     curl \
+    zsh \
     neovim \
     tmux \
     locales 
@@ -17,12 +20,18 @@ ENV LANG en_US.UTF-8
 ENV LANGUAGE en_US.UTF-8
 
 ### create dev user
-RUN sudo useradd -m -d /home/dev dev -s /bin/bash
+RUN sudo useradd -m -d /home/dev dev -s /bin/zsh
 RUN echo dev:pswd | sudo chpasswd
 # add user to sudo group and disable password on sudo
 RUN usermod -aG sudo dev
 RUN echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
+# give read/write permissions for work directory
+
 # create file to remove first-time sudo message for dev user
 RUN touch home/dev/.sudo_as_admin_successful
 # switch to dev user
 USER dev
+# copy any config files into dev user's home directory
+COPY configs/ home/dev/
+
+CMD ["/bin/zsh", "/scripts/startup.sh"]
