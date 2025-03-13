@@ -1,0 +1,4 @@
+* text=auto
+
+scripts/* text=lf
+configs/* text = lf
