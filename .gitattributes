@@ -2,3 +2,4 @@
 
 scripts/* text=lf
 configs/* text=lf
+*.sh text=lf
