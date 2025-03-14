@@ -35,5 +35,7 @@ COPY configs/ home/dev/
 
 # configure git
 RUN git config --global --add safe.directory /work 
+RUN git config --global push.autoSetupRemote true 
+
 
 CMD ["/bin/zsh", "/scripts/startup.sh"]
