@@ -7,6 +7,7 @@ RUN apt-get update -y && apt-get upgrade -y
 RUN apt-get install -y \
     sudo \
     curl \
+    git \
     zsh \
     neovim \
     tmux \
@@ -31,5 +32,8 @@ RUN touch home/dev/.sudo_as_admin_successful
 USER dev
 # copy any config files into dev user's home directory
 COPY configs/ home/dev/
+
+# configure git
+RUN git config --global --add safe.directory /work 
 
 CMD ["/bin/zsh", "/scripts/startup.sh"]
