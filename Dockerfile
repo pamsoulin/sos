@@ -32,6 +32,8 @@ USER dev
 RUN touch home/dev/.sudo_as_admin_successful
 # copy any config files into dev user's home directory
 COPY devhome/ home/dev/
+# change ownership of all files in home/dev to the dev user
+RUN sudo chown -R dev:dev home/dev
 
 # configure git
 RUN git config --global --add safe.directory "*"
