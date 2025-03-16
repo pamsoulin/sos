@@ -35,6 +35,10 @@ COPY devhome/ home/dev/
 # change ownership of all files in home/dev to the dev user
 RUN sudo chown -R dev:dev home/dev
 
+# configure zsh
+RUN git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ~/powerlevel10k
+RUN echo 'source ~/powerlevel10k/powerlevel10k.zsh-theme' >>~/.zshrc
+
 # configure git
 RUN git config --global --add safe.directory "*"
 RUN git config --global push.autoSetupRemote true 
