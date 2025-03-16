@@ -31,7 +31,7 @@ USER dev
 # create file to remove first-time sudo message for dev user
 RUN touch home/dev/.sudo_as_admin_successful
 # copy any config files into dev user's home directory
-COPY configs/ home/dev/
+COPY devhome/ home/dev/
 
 # configure git
 RUN git config --global --add safe.directory "*"
