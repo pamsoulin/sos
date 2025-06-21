@@ -1,3 +1,5 @@
+# syntax=docker/dockerfile:1
+
 FROM ubuntu:latest
 LABEL maintainer="Sam Poulin <pamsoulin@gmail.com>"
 
@@ -46,4 +48,6 @@ RUN git config --global push.autoSetupRemote true
 RUN git config --global user.name "pamsoulin"
 RUN git config --global user.email "pamsoulin@gmail.com"
 
+RUN --mount=type=secret,id=github_pat,env=GITHUB_PAT \
+    git config --global credential.helper '!f() { echo username=author; echo "password=$GIT_TOKEN"; };f'
 CMD ["/bin/zsh", "/scripts/startup.sh"]
