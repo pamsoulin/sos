@@ -36,7 +36,7 @@ COPY devhome/ home/dev/
 RUN sudo chown -R dev:dev home/dev
 
 # configure zsh
-RUN export TERM=xterm-256color
+ENV TERM=xterm-256color
 RUN git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ~/powerlevel10k
 RUN echo 'source ~/powerlevel10k/powerlevel10k.zsh-theme' >>~/.zshrc
 
