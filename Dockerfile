@@ -10,6 +10,7 @@ RUN apt-get install -y \
     sudo \
     curl \
     git \
+    gh \
     zsh \
     neovim \
     tmux \
@@ -18,9 +19,9 @@ RUN apt-get install -y \
 ### configure utf-8 encoding
 RUN sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen
 RUN locale-gen
-ENV LC_ALL en_US.UTF-8
-ENV LANG en_US.UTF-8
-ENV LANGUAGE en_US.UTF-8
+ENV LC_ALL=en_US.UTF-8
+ENV LANG=en_US.UTF-8
+ENV LANGUAGE=en_US.UTF-8
 
 ### create dev user
 RUN sudo useradd -m -d /home/dev dev -s /bin/zsh
@@ -43,12 +44,12 @@ RUN git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ~/powerleve
 RUN echo 'source ~/powerlevel10k/powerlevel10k.zsh-theme' >>~/.zshrc
 
 # configure git
-RUN git config --global --add safe.directory "*"
-RUN git config --global push.autoSetupRemote true 
-RUN git config --global user.name "pamsoulin"
-RUN git config --global user.email "pamsoulin@gmail.com"
+# RUN git config --global --add safe.directory "*"
+# RUN git config --global push.autoSetupRemote true 
+# RUN git config --global user.name "pamsoulin"
+# RUN git config --global user.email "pamsoulin@gmail.com"
 
-RUN --mount=type=secret,id=github_pat,env=GITHUB_PAT \
-    git config --global credential.helper '!f() { echo username=pamsoulin; echo "password=$GIT_TOKEN"; };f'
+# RUN --mount=type=secret,id=github_pat,env=GITHUB_PAT \
+#    git config --global credential.helper '!f() { echo username=pamsoulin; echo "password=$GIT_TOKEN"; };f'
 
 CMD ["/bin/zsh", "/scripts/startup.sh"]
