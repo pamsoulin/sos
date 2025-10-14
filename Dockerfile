@@ -44,7 +44,7 @@ RUN git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ~/powerleve
 RUN echo 'source ~/powerlevel10k/powerlevel10k.zsh-theme' >>~/.zshrc
 
 # configure git
-# RUN git config --global --add safe.directory "*"
+RUN git config --global --add safe.directory "*"
 # RUN git config --global push.autoSetupRemote true 
 # RUN git config --global user.name "pamsoulin"
 # RUN git config --global user.email "pamsoulin@gmail.com"
