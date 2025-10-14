@@ -45,11 +45,5 @@ RUN echo 'source ~/powerlevel10k/powerlevel10k.zsh-theme' >>~/.zshrc
 
 # configure git
 RUN git config --global --add safe.directory "*"
-# RUN git config --global push.autoSetupRemote true 
-# RUN git config --global user.name "pamsoulin"
-# RUN git config --global user.email "pamsoulin@gmail.com"
-
-# RUN --mount=type=secret,id=github_pat,env=GITHUB_PAT \
-#    git config --global credential.helper '!f() { echo username=pamsoulin; echo "password=$GIT_TOKEN"; };f'
 
 CMD ["/bin/zsh", "/scripts/startup.sh"]
