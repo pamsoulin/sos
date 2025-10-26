@@ -6,6 +6,8 @@ LABEL maintainer="Sam Poulin <pamsoulin@gmail.com>"
 
 COPY scripts/ scripts/
 
+SHELL ["/bin/bash", "-c"]
+
 RUN pacman -Syu --noconfirm
 RUN pacman -S --noconfirm \
     sudo \
@@ -51,5 +53,10 @@ RUN echo 'source ~/powerlevel10k/powerlevel10k.zsh-theme' >>~/.zshrc
 
 # configure git
 RUN git config --global --add safe.directory "*"
+
+# install uv
+RUN sudo curl -LsSf https://astral.sh/uv/install.sh | sh 
+ENV PATH="~/.local/bin/:$PATH"
+RUN uv python install
 
 CMD ["/bin/zsh", "/scripts/startup.sh"]
