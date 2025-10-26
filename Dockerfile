@@ -14,8 +14,8 @@ RUN pacman -S --noconfirm \
     github-cli \
     zsh \
     neovim \
-    tmux # \
-    # locales
+    tmux \
+    fastfetch
 RUN pacman -Scc --noconfirm
 
 ### configure utf-8 encoding
