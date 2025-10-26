@@ -1,36 +1,42 @@
 # syntax=docker/dockerfile:1
 
-FROM ubuntu:latest
+FROM archlinux/archlinux:latest
+
 LABEL maintainer="Sam Poulin <pamsoulin@gmail.com>"
 
 COPY scripts/ scripts/
 
 SHELL ["/bin/bash", "-c"]
 
-RUN apt-get update -y && apt-get upgrade -y
-RUN apt-get install -y \
+RUN pacman -Syu --noconfirm
+RUN pacman -S --noconfirm \
     sudo \
     curl \
     git \
-    gh \
+    github-cli \
     zsh \
     neovim \
     tmux \
-    locales 
+    fastfetch
+RUN pacman -Scc --noconfirm
 
 ### configure utf-8 encoding
 RUN sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen
 RUN locale-gen
-ENV LC_ALL=en_US.UTF-8
 ENV LANG=en_US.UTF-8
 ENV LANGUAGE=en_US.UTF-8
 
-### create dev user
+### configure dev user
+# create user
 RUN sudo useradd -m -d /home/dev dev -s /bin/zsh
+# set dev user password
 RUN echo dev:pswd | sudo chpasswd
-# add user to sudo group and disable password on sudo
-RUN usermod -aG sudo dev
-RUN echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
+# add dev user to wheel group
+RUN usermod -aG wheel dev
+# add wheel group to sudoers
+RUN sed -i 's/^# %wheel ALL=(ALL:ALL) ALL/%wheel ALL=(ALL:ALL) ALL/' /etc/sudoers
+# remove password from sudo
+RUN echo '%wheel ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
 # switch to dev user
 USER dev
 # create file to remove first-time sudo message for dev user
