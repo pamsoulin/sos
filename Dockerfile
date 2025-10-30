@@ -60,4 +60,5 @@ RUN sudo curl -LsSf https://astral.sh/uv/install.sh | sh
 ENV PATH="~/.local/bin/:$PATH"
 RUN uv python install
 
+WORKDIR /home/dev/work 
 CMD ["/bin/zsh", "/scripts/startup.sh"]
