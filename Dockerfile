@@ -9,8 +9,9 @@ COPY scripts/ scripts/
 SHELL ["/bin/bash", "-c"]
 
 RUN pacman -Syu --noconfirm
-RUN pacman -S --noconfirm \
+RUN pacman -Sy --noconfirm \
     sudo \
+    less \
     curl \
     git \
     github-cli \
