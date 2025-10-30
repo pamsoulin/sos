@@ -2,4 +2,6 @@
 
 echo "sOS"
 
-exec /bin/zsh "$@"
+
+exec /bin/zsh -c "tmux new-session -s main"
+
