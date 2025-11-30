@@ -43,23 +43,24 @@ RUN touch /home/dev/.sudo_as_admin_successful
 # copy any config files into dev user's home directory
 COPY devhome/ /home/dev/
 # change ownership of all files in home/dev to the dev user
-RUN sudo chown -R dev:dev home/dev
+RUN sudo chown -R dev:dev /home/dev
 
-# fix line endings for copied files
-RUN sudo dos2unix /scripts/*.sh
-RUN sudo dos2unix -r /home/dev/
 
 ### configure zsh
 ENV TERM=xterm-256color
-RUN git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ~/powerlevel10k
-RUN echo 'source ~/powerlevel10k/powerlevel10k.zsh-theme' >>~/.zshrc
+RUN git clone --depth=1 https://github.com/romkatv/powerlevel10k.git /home/dev/powerlevel10k
+RUN echo 'source /home/dev/powerlevel10k/powerlevel10k.zsh-theme' >>/home/dev/.zshrc
 
 ### configure git
 RUN git config --global --add safe.directory "*"
 
 ### install uv and python
 RUN sudo curl -LsSf https://astral.sh/uv/install.sh | sh 
-ENV PATH="~/.local/bin/:$PATH"
+ENV PATH="/home/dev/.local/bin/:$PATH"
 RUN uv python install
+
+# fix line endings for scripts and config files
+# RUN sudo dos2unix /scripts/*.sh
+# RUN sudo dos2unix -r /home/dev/
 
 CMD ["/bin/zsh", "/scripts/startup.sh"]
