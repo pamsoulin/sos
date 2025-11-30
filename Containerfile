@@ -1,5 +1,3 @@
-# syntax=docker/dockerfile:1
-
 FROM archlinux/archlinux:latest
 
 LABEL maintainer="Sam Poulin <pamsoulin@gmail.com>"
@@ -17,7 +15,8 @@ RUN pacman -S --noconfirm \
     zsh \
     neovim \
     tmux \
-    fastfetch
+    fastfetch \
+    dos2unix
 RUN pacman -Scc --noconfirm
 
 ### configure utf-8 encoding
@@ -40,21 +39,25 @@ RUN echo '%wheel ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
 # switch to dev user
 USER dev
 # create file to remove first-time sudo message for dev user
-RUN touch home/dev/.sudo_as_admin_successful
+RUN touch /home/dev/.sudo_as_admin_successful
 # copy any config files into dev user's home directory
-COPY devhome/ home/dev/
+COPY devhome/ /home/dev/
 # change ownership of all files in home/dev to the dev user
 RUN sudo chown -R dev:dev home/dev
 
-# configure zsh
+# fix line endings for copied files
+RUN sudo dos2unix /scripts/*.sh
+RUN sudo dos2unix -r /home/dev/
+
+### configure zsh
 ENV TERM=xterm-256color
 RUN git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ~/powerlevel10k
 RUN echo 'source ~/powerlevel10k/powerlevel10k.zsh-theme' >>~/.zshrc
 
-# configure git
+### configure git
 RUN git config --global --add safe.directory "*"
 
-# install uv
+### install uv and python
 RUN sudo curl -LsSf https://astral.sh/uv/install.sh | sh 
 ENV PATH="~/.local/bin/:$PATH"
 RUN uv python install
