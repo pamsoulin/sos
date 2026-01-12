@@ -4,11 +4,10 @@ LABEL maintainer="Sam Poulin <pamsoulin@gmail.com>"
 
 COPY scripts/ scripts/
 
-#SHELL ["/bin/bash", "-c"]
-
 RUN pacman -Syu --noconfirm
 RUN pacman -S --noconfirm \
     sudo \
+    less \
     curl \
     git \
     github-cli \
@@ -23,6 +22,7 @@ RUN pacman -Scc --noconfirm
 RUN sed -i -e 's/#en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen
 RUN locale-gen
 ENV LANG=en_US.UTF-8
+ENV LANGUAGE=en_US.UTF-8
 
 ### configure dev user
 # create user
@@ -43,7 +43,6 @@ RUN touch /home/dev/.sudo_as_admin_successful
 COPY devhome/ /home/dev/
 # change ownership of all files in home/dev to the dev user
 RUN sudo chown -R dev:dev /home/dev
-
 
 ### configure zsh
 ENV TERM=xterm-256color
