@@ -4,7 +4,7 @@ LABEL maintainer="Sam Poulin <pamsoulin@gmail.com>"
 
 COPY scripts/ scripts/
 
-SHELL ["/bin/bash", "-c"]
+#SHELL ["/bin/bash", "-c"]
 
 RUN pacman -Syu --noconfirm
 RUN pacman -S --noconfirm \
@@ -20,10 +20,9 @@ RUN pacman -S --noconfirm \
 RUN pacman -Scc --noconfirm
 
 ### configure utf-8 encoding
-RUN sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen
+RUN sed -i -e 's/#en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen
 RUN locale-gen
 ENV LANG=en_US.UTF-8
-ENV LANGUAGE=en_US.UTF-8
 
 ### configure dev user
 # create user
@@ -60,7 +59,7 @@ ENV PATH="/home/dev/.local/bin/:$PATH"
 RUN uv python install
 
 # fix line endings for scripts and config files
-# RUN sudo dos2unix /scripts/*.sh
-# RUN sudo dos2unix -r /home/dev/
+RUN sudo dos2unix /scripts/*.sh
+RUN sudo find /home/dev/ -type f -print0 | xargs -0 -n 100 -P 4 dos2unix 2>/dev/null || true 
 
 CMD ["/bin/zsh", "/scripts/startup.sh"]
